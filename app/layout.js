@@ -13,11 +13,8 @@ export const metadata = {
   title: "KGPROTOOL",
   description: "Powerful MDM Tool",
   icons: {
-    icon: "/favicon.ico",         
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png", 
+    icon: "/KGPro.ico",         
   },
-  manifest: "/site.webmanifest", 
 };
 
 export default function RootLayout({ children }) {

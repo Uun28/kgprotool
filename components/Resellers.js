@@ -31,7 +31,14 @@ export default function Resellers() {
       website: "",
     },
     {
-       name: "KGPROTOOL",
+      name: "KGPROTOOL",
+      logo: "/reseller.png",
+      whatsapp: "",
+      telegram: "",
+      website: "",
+    },
+    {
+      name: "KGPROTOOL",
       logo: "/reseller.png",
       whatsapp: "",
       telegram: "",
@@ -51,14 +58,6 @@ export default function Resellers() {
       telegram: "",
       website: "",
     },
-    {
-       name: "KGPROTOOL",
-      logo: "/reseller.png",
-      whatsapp: "",
-      telegram: "",
-      website: "",
-    },
-    
   ];
 
   return (
@@ -89,10 +88,10 @@ export default function Resellers() {
               hover:shadow-xl hover:-translate-y-2 hover:border-sky-200 
               transition-all duration-500 w-full max-w-[280px] sm:max-w-[300px]"
           >
-            {/* Hover glow background */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-200/10 to-blue-200/10 opacity-0 hover:opacity-100 transition-all duration-500"></div>
+            {/* Hover glow background FIXED */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-200/10 to-blue-200/10 opacity-0 hover:opacity-100 transition-all duration-500 pointer-events-none"></div>
 
-            {/* Logo dengan frame premium */}
+            {/* Logo with premium frame */}
             <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2px] bg-gradient-to-br from-sky-400 to-blue-500 shadow-md">
               <div className="w-full h-full rounded-full overflow-hidden bg-white">
                 <img
@@ -110,13 +109,13 @@ export default function Resellers() {
 
             {/* Social Links */}
             {(reseller.whatsapp || reseller.telegram || reseller.website) && (
-              <div className="flex gap-4 mt-4">
+              <div className="flex gap-4 mt-4 relative z-10">
                 {reseller.whatsapp && (
                   <a
                     href={reseller.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-green-100 to-green-50 text-green-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full bg-gradient-to-br from-green-100 to-green-50 text-green-600 hover:scale-110 hover:rotate-3 transition-all shadow-sm hover:shadow-md"
                   >
                     <MessageCircle size={18} />
                   </a>
@@ -126,7 +125,7 @@ export default function Resellers() {
                     href={reseller.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-sky-100 to-blue-50 text-sky-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full bg-gradient-to-br from-sky-100 to-blue-50 text-sky-600 hover:scale-110 hover:-rotate-3 transition-all shadow-sm hover:shadow-md"
                   >
                     <Send size={18} />
                   </a>
@@ -136,7 +135,7 @@ export default function Resellers() {
                     href={reseller.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-gray-100 to-gray-50 text-gray-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full bg-gradient-to-br from-gray-100 to-gray-50 text-gray-600 hover:scale-110 hover:rotate-1 transition-all shadow-sm hover:shadow-md"
                   >
                     <Globe size={18} />
                   </a>

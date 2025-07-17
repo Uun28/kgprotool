@@ -18,8 +18,8 @@ export default function Navbar() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 2.3,
-      easing: (t) => 1 - Math.pow(1 - t, 3), 
+      duration: 1.6,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
     });
     setLenisInstance(lenis);
 
@@ -58,11 +58,11 @@ export default function Navbar() {
 
     const target = document.querySelector(href);
     if (target) {
-      const offset = 100; // kasih jarak 100px dari atas
+      const offset = 80; 
       const targetPosition = target.offsetTop - offset;
       lenisInstance.scrollTo(targetPosition, {
         offset: 0,
-        duration: 2.3,
+        duration: 1.6,
       });
     }
     setIsOpen(false);
@@ -70,15 +70,16 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-4 w-full z-50">
-      {/*  DESKTOP NAVBAR */}
+      {/* === DESKTOP NAVBAR === */}
       <div className="hidden md:flex justify-center transition-all duration-300">
         <div
-          className={`flex items-center gap-6 px-8 py-3 rounded-2xl 
+          className={`flex items-center gap-8 px-10 py-3 rounded-2xl border
             ${
               scrolling
-                ? "bg-white/80 backdrop-blur-md shadow-md"
-                : "bg-white/40 backdrop-blur-sm"
-            }`}
+                ? "bg-white/40 backdrop-blur-md border-white/20 shadow-sm"
+                : "bg-white/20 backdrop-blur-sm border-white/10 shadow-none"
+            }
+          `}
         >
           {menus.map((menu) => {
             const isActive = activeSection === menu.id;
@@ -87,46 +88,45 @@ export default function Navbar() {
                 key={menu.id}
                 href={menu.href}
                 onClick={(e) => handleMenuClick(e, menu.href)}
-                className={`relative px-2 py-1 transition-all duration-300 hover:text-sky-600 ${
-                  isActive ? "text-sky-600" : "text-gray-700"
+                className={`relative text-base font-medium tracking-wide transition-all duration-300 ${
+                  isActive ? "text-sky-600" : "text-gray-700 hover:text-sky-500"
                 }`}
               >
                 {menu.name}
+                {/* Active indicator */}
                 <span
-                  className={`absolute left-0 -bottom-1 h-[2px] w-full transition-all duration-300 rounded-full ${
-                    isActive
-                      ? "bg-gradient-to-r from-sky-400 to-blue-500 opacity-100"
-                      : "opacity-0"
+                  className={`absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 rounded-full bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-300 ${
+                    isActive ? "w-5 opacity-100" : "opacity-0"
                   }`}
-                ></span>
+                />
               </a>
             );
           })}
         </div>
       </div>
 
-      {/*  MOBILE NAVBAR */}
+      {/* === MOBILE NAVBAR === */}
       <div
         className={`md:hidden flex ${
           scrolling ? "justify-end pr-4" : "justify-center"
         }`}
       >
         <div
-          className={`flex items-center justify-between px-5 py-2.5 rounded-2xl transition-all duration-300 
+          className={`flex items-center justify-between px-5 py-2.5 rounded-xl border transition-all duration-300
             ${
               scrolling
-                ? "bg-white/80 backdrop-blur-md shadow-md"
-                : "bg-white/40 backdrop-blur-sm"
+                ? "bg-white/40 backdrop-blur-md border-white/20 shadow-sm"
+                : "bg-white/20 backdrop-blur-sm border-white/10 shadow-none"
             }`}
         >
           {/* Mobile Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-lg hover:bg-sky-50 transition-all"
+            className="p-2 rounded-lg hover:bg-sky-50/30 transition-all"
           >
             {isOpen ? (
               <svg
-                className="w-8 h-8"
+                className="w-7 h-7"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -140,7 +140,7 @@ export default function Navbar() {
               </svg>
             ) : (
               <svg
-                className="w-8 h-8"
+                className="w-7 h-7"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -157,21 +157,25 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/*  MOBILE DROPDOWN */}
-      {isOpen && (
-        <div className="absolute top-20 right-4 w-[80%] bg-white/95 backdrop-blur-md shadow-lg rounded-2xl md:hidden flex flex-col space-y-3 px-6 py-6 text-gray-700">
+      {/* === MOBILE DROPDOWN === */}
+      <div
+        className={`absolute top-20 right-4 w-[80%] rounded-2xl overflow-hidden transition-all duration-300 md:hidden
+          ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
+        `}
+      >
+        <div className="bg-white/30 backdrop-blur-lg shadow-lg border border-white/20 flex flex-col px-6 py-5 space-y-3">
           {menus.map((menu) => (
             <a
               key={menu.id}
               href={menu.href}
               onClick={(e) => handleMenuClick(e, menu.href)}
-              className="text-lg py-3 rounded-md hover:text-sky-600 hover:bg-sky-50 transition-all duration-300"
+              className="text-lg font-medium py-2 px-2 rounded-lg hover:text-sky-600 hover:bg-sky-50/40 transition-all duration-300"
             >
               {menu.name}
             </a>
           ))}
         </div>
-      )}
+      </div>
     </nav>
   );
 }

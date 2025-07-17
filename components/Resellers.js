@@ -60,7 +60,7 @@ export default function Resellers() {
     },
   ];
 
-  return (
+   return (
     <section
       id="resellers"
       className="relative py-16 px-4 sm:px-8 lg:px-20 flex flex-col items-center"
@@ -78,44 +78,39 @@ export default function Resellers() {
         </p>
       </div>
 
-      {/* Grid Resellers */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center w-full max-w-7xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center w-full max-w-7xl">
         {resellers.map((reseller, idx) => (
           <div
             key={idx}
-            className="relative flex flex-col items-center p-6 rounded-2xl 
-              bg-white/80 backdrop-blur-md border border-gray-100 shadow-sm 
-              hover:shadow-xl hover:-translate-y-2 hover:border-sky-200 
-              transition-all duration-500 w-full max-w-[280px] sm:max-w-[300px]"
+            className="relative flex flex-col items-center px-5 pt-8 pb-6 rounded-3xl border border-sky-200 shadow-lg shadow-sky-100/40
+              transition-all duration-500 hover:shadow-xl hover:border-sky-400/60
+              bg-transparent backdrop-blur-none w-full max-w-[280px] sm:max-w-[300px] group"
           >
-            {/* Hover glow background FIXED */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-200/10 to-blue-200/10 opacity-0 hover:opacity-100 transition-all duration-500 pointer-events-none"></div>
-
-            {/* Logo with premium frame */}
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2px] bg-gradient-to-br from-sky-400 to-blue-500 shadow-md">
-              <div className="w-full h-full rounded-full overflow-hidden bg-white">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mb-3 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border-2 border-dashed border-sky-400/40 group-hover:border-sky-400/90 transition-all duration-500" />
+              <div className="absolute inset-1 rounded-full bg-white/40 blur-md opacity-30 group-hover:opacity-60 group-hover:blur-lg transition-all duration-500 pointer-events-none" />
+              <div className="relative rounded-full overflow-hidden shadow-md w-full h-full flex items-center justify-center">
                 <img
                   src={reseller.logo}
                   alt={reseller.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-full border-2 border-white"
                 />
               </div>
             </div>
 
-            {/* Name */}
-            <h3 className="mt-4 text-center text-base md:text-lg text-gray-800 font-medium">
+            <h3 className="mt-2 text-center text-lg md:text-xl font-normal bg-gray-600 text-transparent bg-clip-text drop-shadow-md tracking-wide select-text">
               {reseller.name}
             </h3>
 
             {/* Social Links */}
             {(reseller.whatsapp || reseller.telegram || reseller.website) && (
-              <div className="flex gap-4 mt-4 relative z-10">
+              <div className="flex gap-4 mt-6 relative z-10">
                 {reseller.whatsapp && (
                   <a
                     href={reseller.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-green-100 to-green-50 text-green-600 hover:scale-110 hover:rotate-3 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full border border-green-200 text-green-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
                   >
                     <MessageCircle size={18} />
                   </a>
@@ -125,7 +120,7 @@ export default function Resellers() {
                     href={reseller.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-sky-100 to-blue-50 text-sky-600 hover:scale-110 hover:-rotate-3 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full border border-sky-200 text-sky-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
                   >
                     <Send size={18} />
                   </a>
@@ -135,7 +130,7 @@ export default function Resellers() {
                     href={reseller.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-gradient-to-br from-gray-100 to-gray-50 text-gray-600 hover:scale-110 hover:rotate-1 transition-all shadow-sm hover:shadow-md"
+                    className="p-2 rounded-full border border-gray-200 text-gray-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
                   >
                     <Globe size={18} />
                   </a>

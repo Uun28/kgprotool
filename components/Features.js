@@ -1,3 +1,6 @@
+'use client'
+import { CheckCircle } from "lucide-react";
+
 export default function Features() {
   const features = [
     "KG Unlock OS 11-14 All Security Patch [ADB]",
@@ -36,25 +39,24 @@ export default function Features() {
   ];
 
   return (
-    <section id="feature" className="relative py-20 px-6 md:px-20">
-      <div className="text-center mb-12">
-         <h2 className="text-3xl md:text-4xl text-gray-700">
-           <span className="bg-gradient-to-r from-sky-500 to-blue-600 text-transparent bg-clip-text">
+    <section id="feature" className="relative py-20 px-4 md:px-20">
+      <div className="text-center mb-14">
+           <h2 className="text-3xl md:text-4xl text-gray-800 tracking-tight">
+          <span className="bg-gradient-to-r from-sky-500 to-blue-600 text-transparent bg-clip-text">
             Premium Features
           </span>{" "}
           for All Devices
         </h2>
-        <p className="text-gray-500 mt-2 max-w-2xl mx-auto">
-          Unlock, patch, edit & manage with powerful toolkit
+        <p className="text-gray-500 mt-3 max-w-2xl mx-auto text-base">
+          Unlock, patch, edit & manage with a powerful toolkit.  
         </p>
       </div>
 
-      {/* ✅ 3 column list instead of cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-4 max-w-6xl mx-auto">
         {features.map((feature, idx) => (
           <div key={idx} className="flex items-start gap-2">
-            <span className="text-sky-500 text-lg">✔</span>
-            <span className="text-gray-700 text-sm">{feature}</span>
+            <CheckCircle className="w-5 h-5 text-sky-500 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-500 text-sm font-normal">{feature}</span>
           </div>
         ))}
       </div>

@@ -16,7 +16,7 @@ export default function Hero() {
         data-aos="fade-up"
         data-aos-delay="100"
       >
-        <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-transparent bg-clip-text animate-gradient-x">
+         <span className="bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text animate-gradient-x">
           KGPROTOOL 2.0
         </span>
         <br />
@@ -31,7 +31,7 @@ export default function Hero() {
       </p>
 
       <div className="mt-8" data-aos="fade-up" data-aos-delay="300">
-        <button className="relative px-8 py-3 rounded-xl font-medium text-white bg-gradient-to-r from-sky-400 to-blue-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden group">
+        <button className="relative px-8 py-3 rounded-xl font-medium text-white bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden group">
           <span className="relative z-10">Download Now</span>
           <span className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
         </button>

@@ -110,7 +110,9 @@ export default function Plan() {
                   hover:scale-[1.03]
                   text-white shadow relative overflow-hidden transition-all duration-300 text-base
                 `}
-                onClick={() => alert(`Buy ${plan.title}`)}
+               onClick={() => {
+                                document.getElementById('resellers')?.scrollIntoView({ behavior: 'smooth' });
+                              }}
               >
                 <span className="relative z-10">Buy Now</span>
                 <span className="absolute top-0 left-0 w-full h-full rounded-lg bg-gradient-to-r from-white/30 to-white/10 opacity-40 pointer-events-none blur-sm" />

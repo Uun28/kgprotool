@@ -18,14 +18,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Favicon and Apple touch icon */}
         <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
-        <link rel="icon" href="/KGPro.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/KGPro.png" />
-        {/* Title and description fallback if needed */}
         <title>KGPROTOOL</title>
         <meta name="description" content="Powerful MDM Tool" />
-        {/* You can add more meta if you want */}
       </head>
       <body className={`${poppins.variable} antialiased relative`}>   
         <div className="fixed inset-0 -z-50">
@@ -36,6 +31,35 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main className="relative z-10">{children}</main>
         <Footer />
+         <a
+          href="https://t.me/KGPRoTool"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Telegram"
+          className="
+            fixed
+            bottom-5 right-5
+            z-50
+            w-14 h-14
+            rounded-full
+            bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500
+            shadow-lg
+            flex items-center justify-center
+            hover:scale-110
+            transition-all
+            group
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28" height="28"
+            fill="white"
+            viewBox="0 0 24 24"
+            className="transition-transform group-hover:rotate-12"
+          >
+            <path d="M9.965 17.159c-.297 0-.254-.112-.36-.396l-.865-2.863 6.921-4.125c.323-.196.141-.306-.199-.11l-8.557 5.405-2.534-.793c-.55-.168-.561-.55.115-.814l10.107-3.892c.434-.162.819.098.678.774l-1.724 8.164c-.12.541-.447.67-.906.417l-2.529-1.864-1.222 1.177z"/>
+          </svg>
+        </a>
       </body>
     </html>
   );

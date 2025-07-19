@@ -9,7 +9,7 @@ export default function Footer() {
 
         {/* ✅ Lower Footer */}
         <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} KGPROTOOL Powered By MK-G From Minangkabau. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} KGPROTOOL Powered By Alpha MK-G. All rights reserved.</p>
         </div>
       </div>
     </footer>

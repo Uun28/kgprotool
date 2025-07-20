@@ -1,4 +1,4 @@
-import { Globe, MessageCircle, Send } from "lucide-react";
+import { Globe, MessageCircle, Send, Facebook as FacebookIcon } from "lucide-react";
 
 export default function Resellers() {
   const resellers = [
@@ -11,12 +11,13 @@ export default function Resellers() {
       country: "INDIA",
     },
     {
-      name: "KGPROTOOL",
-      logo: "/reseller.png",
-      whatsapp: "",
-      telegram: "",
+      name: "GSM SULTENG",
+      logo: "/gsmsulteng.jpg",
+      whatsapp: "https://wa.me/+6281244091571",
+      telegram: "https://t.me/GS_hary12",
+      facebook: "https://www.facebook.com/hary.sulteng.2025",
       website: "",
-      country: "",
+      country: "INDONESIA",
     },
     {
       name: "KGPROTOOL",
@@ -117,7 +118,7 @@ export default function Resellers() {
             </h3>
 
             {/* Social Links */}
-            {(reseller.whatsapp || reseller.telegram || reseller.website) && (
+            {(reseller.whatsapp || reseller.telegram || reseller.website || reseller.facebook) && (
               <div className="flex gap-4 mt-6 relative z-10">
                 {reseller.whatsapp && (
                   <a
@@ -139,6 +140,16 @@ export default function Resellers() {
                     <Send size={18} />
                   </a>
                 )}
+                 {reseller.facebook && (
+                    <a
+                      href={reseller.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-full border border-blue-200 text-blue-600 hover:scale-110 transition-all shadow-sm hover:shadow-md"
+                    >
+                      <FacebookIcon size={18} />
+                    </a>
+                  )}
                 {reseller.website && (
                   <a
                     href={reseller.website}

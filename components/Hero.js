@@ -77,7 +77,7 @@ export default function Hero() {
 
       {/* CTA Button */}
       <div className="mt-8" data-aos="fade-up" data-aos-delay="300">
-        <a href="#download">
+        <a href="/KGProTool.rar">
           <button className="relative px-8 py-3 rounded-xl font-normal text-white bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden group">
             <span className="relative z-10">Download Now</span>
             <span className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />

@@ -16,6 +16,7 @@ export default function Plan() {
       title: "12 Month",
       price: "$40",
       popular: true,
+      originalPrice: "$60",
       features: [
         "Free Update",
         "Change PC Every 12 Hours",
@@ -70,7 +71,7 @@ export default function Plan() {
 
               {/* Popular Badge */}
               {isPopular && (
-                <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-medium rounded-full shadow-lg flex items-center gap-2 animate-pulse">
+                <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-normal rounded-full shadow-lg flex items-center gap-2 animate-pulse">
                   <Star className="w-4 h-4 text-yellow-300 drop-shadow" />
                   Most Popular
                 </span>
@@ -80,9 +81,27 @@ export default function Plan() {
               <h3 className="mt-2 text-base md:text-lg text-gray-700 font-normal tracking-wide">
                 {plan.title}
               </h3>
-              <div className="flex items-baseline justify-center mt-1">
-                <span className="text-3xl md:text-4xl text-sky-600 font-normal drop-shadow">{plan.price}</span>
+              <div className="flex items-baseline justify-center mt-1 gap-3">
+                {/* Jika ada originalPrice, tampilkan harga coret */}
+                {plan.originalPrice && (
+                  <span className="text-lg md:text-xl text-gray-400 line-through font-normal">
+                    {plan.originalPrice}
+                  </span>
+                )}
+                <span className={`text-3xl md:text-4xl font-normal drop-shadow 
+                  ${isPopular ? "text-sky-600" : "text-sky-600/90"}`}>
+                  {plan.price}
+                </span>
               </div>
+              {/* Badge discount jika popular */}
+              {isPopular && (
+                <div className="flex justify-center mt-1">
+                  <span className="inline-block text-xs md:text-sm text-blue-600 bg-blue-100 rounded-full px-3 py-0.5 font-normal shadow">
+                    Save 33%
+                  </span>
+                </div>
+              )}
+
               <p className="text-gray-400 mt-1 text-xs md:text-sm italic">
                 One-time payment
               </p>

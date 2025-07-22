@@ -28,12 +28,12 @@ export default function Sidebar() {
       credentials: 'include'
     });
     setLoading(false);
-    // redirect to login
     router.push('/admin/login');
   }
 
-  return (
-    <aside className="fixed top-0 left-0 h-screen w-64 z-50 bg-white/70 backdrop-blur-2xl border-r border-blue-100 flex flex-col shadow-2xl transition-all duration-300">
+  // =============== DESKTOP SIDEBAR (md ke atas) ===============
+  const DesktopSidebar = (
+    <aside className="hidden md:flex fixed top-0 left-0 h-screen w-64 z-50 bg-white/70 backdrop-blur-2xl border-r border-blue-100 flex-col shadow-2xl transition-all duration-300">
       {/* Brand / Logo */}
       <div className="px-8 py-7 flex items-center gap-3 border-b border-blue-100 mb-2">
         <div className="p-1.5 rounded-2xl shadow-md">
@@ -65,7 +65,6 @@ export default function Sidebar() {
               `}
               style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
             >
-              {/* Accent bar */}
               <span
                 className={`
                   absolute left-0 top-1/2 -translate-y-1/2 h-7 w-1 rounded-r-full
@@ -97,9 +96,56 @@ export default function Sidebar() {
           {loading ? "Logging out..." : "Logout"}
         </button>
       </div>
-
-      {/* Blur effect layer (layered glass) */}
       <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/40 via-blue-50/10 to-transparent blur-[1px] opacity-60 -z-10"></div>
     </aside>
+  );
+
+  // =============== BOTTOM NAVBAR (tablet & mobile) ===============
+  const BottomNavbar = (
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-t border-blue-100 flex justify-around items-center h-16 shadow-2xl">
+      {menu.map((item) => {
+        const Icon = item.icon;
+        const active = pathname === item.path;
+        return (
+          <Link
+            href={item.path}
+            key={item.name}
+            className={`
+              flex flex-col items-center justify-center gap-0.5 px-2 py-1.5
+              text-xs font-medium transition-all
+              ${active
+                ? "text-sky-600"
+                : "text-gray-400 hover:text-sky-500"}
+            `}
+            style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
+          >
+            <Icon className={`w-6 h-6`} />
+            <span>{item.name}</span>
+          </Link>
+        );
+      })}
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        disabled={loading}
+        className={`
+          flex flex-col items-center justify-center gap-0.5 px-2 py-1.5
+          text-xs font-medium text-red-600
+          ${loading && "opacity-50 pointer-events-none"}
+        `}
+        style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
+      >
+        <LogOut className="w-6 h-6" />
+        <span>{loading ? "..." : "Logout"}</span>
+      </button>
+    </nav>
+  );
+
+  // =============== RENDER BOTH (conditionally with Tailwind) ===============
+  return (
+    <>
+      {DesktopSidebar}
+      {BottomNavbar}
+    </>
   );
 }

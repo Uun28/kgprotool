@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Sidebar from './component/Sidebar';
 import { Poppins } from "next/font/google";
 import { LoginadminProvider } from './LoginadminContext';
@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
       </div>
       <LoginadminProvider>
         {showSidebar && <Sidebar />}
-        <main className={`flex-1 relative z-10 p-4 md:p-8 ${showSidebar ? 'ml-64' : ''}`}>
+        <main className={`flex-1 relative z-10 p-4 md:p-8 ${showSidebar ? 'md:ml-64' : ''} pb-20`}>
           {children}
         </main>
       </LoginadminProvider>

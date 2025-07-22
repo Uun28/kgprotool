@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { API } from '@/lib/config';
+import { API2 } from '@/lib/config';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -11,16 +11,18 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
- useEffect(() => {
-  fetch(`${API}?mode=session`, { credentials: "include" })
+useEffect(() => {
+  fetch(`${API2}?mode=session`, { credentials: "include" })
     .then(res => res.json())
     .then(data => {
-      if (data.status === 'success' && data.user && data.user.role === "admin") {
-        router.replace('/admin/dashboard');
+      if (data.status === 'success' && data.user && data.user.role === "resellers") {
+        router.replace('/resellers/selling');
       }
     });
 }, [router]);
 
+
+  // Clear error ketika user ngetik ulang
   function handleInput(setter) {
     return (e) => {
       setter(e.target.value);
@@ -33,7 +35,7 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(API, {
+      const res = await fetch(API2, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -43,10 +45,12 @@ export default function LoginPage() {
           password,
         }).toString(),
       });
+      console.log(email, password);
       const data = await res.json();
+      console.log(data);
       if (data.status === 'success') {
-        localStorage.setItem('admin', JSON.stringify(data.user));
-        router.replace('/admin/dashboard');
+        localStorage.setItem('loginresellers', JSON.stringify(data.user));
+        router.replace('/resellers/selling');
       } else {
         setError(data.message || 'Login Failed!');
       }

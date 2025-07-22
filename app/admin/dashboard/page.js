@@ -17,19 +17,20 @@ function Shimmer({ className = '' }) {
   );
 }
 
-function StatCard({ icon, label, value, color, iconBg }) {
+function StatCard({ icon, label, value, color, iconBg, textColor = "text-slate-900" }) {
   return (
     <div className={`
-      group relative rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center shadow-xl border
-      bg-white/70 border-slate-200 backdrop-blur-lg
-      hover:scale-105 hover:shadow-2xl transition-all duration-300
+      relative rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center
+      border bg-white/90 border-slate-200
+      transition-shadow duration-150
+      hover:shadow-md
       ${color}
     `}>
-      <div className={`flex items-center justify-center rounded-full p-2 mb-2 shadow-md ${iconBg}`}>
+      <div className={`flex items-center justify-center rounded-full p-2 mb-2 shadow-sm ${iconBg}`}>
         {icon}
       </div>
-      <div className="text-xs sm:text-sm font-normal text-slate-600">{label}</div>
-      <div className="text-2xl font-normal text-slate-800 mt-1 tracking-tight drop-shadow bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-500 bg-clip-text text-transparent">
+      <div className="text-xs sm:text-sm font-normal text-slate-700">{label}</div>
+      <div className={`text-2xl font-normal mt-1 tracking-tight ${textColor}`}>
         {value}
       </div>
     </div>
@@ -37,41 +38,26 @@ function StatCard({ icon, label, value, color, iconBg }) {
 }
 
 export default function AdminDashboard() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
   const [sales, setSales] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingSales, setLoadingSales] = useState(true);
-  const [error, setError] = useState('');
-  const [errorSales, setErrorSales] = useState('');
 
   useEffect(() => {
-    fetch(`${API}?mode=getuser`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') setUsers(data.data);
-        else setError(data.message || 'Failed to fetch users');
-        setLoading(false);
+    setLoading(true);
+    Promise.all([
+      fetch(`${API}?mode=getuser`, { credentials: 'include' }).then(r => r.json()),
+      fetch(`${API}?mode=getpenjualan`, { credentials: 'include' }).then(r => r.json())
+    ])
+      .then(([usersData, salesData]) => {
+        if(usersData.status === 'success') setUsers(usersData.data);
+        else setError(usersData.message || 'Failed to fetch users');
+        if(salesData.status === 'success') setSales(salesData.data);
+        else setError(salesData.message || 'Failed to fetch sales');
       })
-      .catch(() => {
-        setError('Server error');
-        setLoading(false);
-      });
+      .catch(() => setError('Server error'))
+      .finally(() => setLoading(false));
   }, []);
-
-  useEffect(() => {
-    fetch(`${API}?mode=getpenjualan`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') setSales(data.data);
-        else setErrorSales(data.message || 'Failed to fetch sales');
-        setLoadingSales(false);
-      })
-      .catch(() => {
-        setErrorSales('Server error');
-        setLoadingSales(false);
-      });
-  }, []);
-
 
   const today = new Date();
   function monthYearKey(dt) {
@@ -135,37 +121,37 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-3 md:gap-5 mb-12">
         {loading ? (
           Array.from({ length: 8 }).map((_, i) =>
-            <div key={i} className="rounded-2xl h-24 sm:h-28 bg-white/70 shadow-lg border border-slate-100">
+            <div key={i} className="rounded-2xl h-24 sm:h-28 bg-white/70 shadow-lg border border-gray-300">
               <Shimmer className="w-full h-full rounded-2xl" />
             </div>
           )
         ) : (
           <>
-            <StatCard icon={<Users className="w-6 h-6" />} label="Total Users" value={totalUser} color="bg-gradient-to-tr from-blue-50 to-white" iconBg="bg-blue-200/50" />
-            <StatCard icon={<UserCheck className="w-6 h-6" />} label="Admin" value={adminUser} color="bg-gradient-to-tr from-indigo-50 to-white" iconBg="bg-indigo-200/50" />
-            <StatCard icon={<Gem className="w-6 h-6" />} label="Resellers" value={resellerUser} color="bg-gradient-to-tr from-pink-50 to-white" iconBg="bg-pink-200/50" />
-            <StatCard icon={<UserCheck className="w-6 h-6" />} label="Active" value={activeUser} color="bg-gradient-to-tr from-green-50 to-white" iconBg="bg-green-200/50" />
-            <StatCard icon={<Timer className="w-6 h-6" />} label="Expired" value={expiredUser} color="bg-gradient-to-tr from-yellow-50 to-white" iconBg="bg-yellow-200/50" />
-            <StatCard icon={<Gem className="w-6 h-6" />} label="No License" value={nolicenseUser} color="bg-gradient-to-tr from-slate-50 to-white" iconBg="bg-slate-200/50" />
-            <StatCard icon={<Ban className="w-6 h-6" />} label="Banned" value={bannedUser} color="bg-gradient-to-tr from-red-50 to-white" iconBg="bg-red-200/50" />
-            <StatCard icon={<Wallet className="w-6 h-6" />} label="Income" value={`$${totalIncome.toLocaleString()}`} color="bg-gradient-to-tr from-emerald-50 to-white" iconBg="bg-emerald-200/50" />
+            <StatCard icon={<Users className="w-6 h-6 text-blue-600" />} label="Total Users" value={totalUser} color="bg-gradient-to-tr from-blue-50 to-white" iconBg="bg-blue-200/50" textColor="text-blue-900" />
+            <StatCard icon={<UserCheck className="w-6 h-6 text-indigo-600" />} label="Admin" value={adminUser} color="bg-gradient-to-tr from-indigo-50 to-white" iconBg="bg-indigo-200/50" textColor="text-indigo-900" />
+            <StatCard icon={<Gem className="w-6 h-6 text-pink-600" />} label="Resellers" value={resellerUser} color="bg-gradient-to-tr from-pink-50 to-white" iconBg="bg-pink-200/50" textColor="text-pink-900" />
+            <StatCard icon={<UserCheck className="w-6 h-6 text-green-600" />} label="Active" value={activeUser} color="bg-gradient-to-tr from-green-50 to-white" iconBg="bg-green-200/50" textColor="text-green-900" />
+            <StatCard icon={<Timer className="w-6 h-6 text-yellow-600" />} label="Expired" value={expiredUser} color="bg-gradient-to-tr from-yellow-50 to-white" iconBg="bg-yellow-200/50" textColor="text-yellow-900" />
+            <StatCard icon={<Gem className="w-6 h-6 text-slate-600" />} label="No License" value={nolicenseUser} color="bg-gradient-to-tr from-slate-50 to-white" iconBg="bg-slate-200/50" textColor="text-slate-900" />
+            <StatCard icon={<Ban className="w-6 h-6 text-red-600" />} label="Banned" value={bannedUser} color="bg-gradient-to-tr from-red-50 to-white" iconBg="bg-red-200/50" textColor="text-red-900" />
+            <StatCard icon={<Wallet className="w-6 h-6 text-emerald-600" />} label="Income" value={`$${totalIncome.toLocaleString()}`} color="bg-gradient-to-tr from-emerald-50 to-white" iconBg="bg-emerald-200/50" textColor="text-emerald-900" />
           </>
         )}
       </div>
 
       <div className="
-        bg-white/70 rounded-3xl p-7 shadow-xl border border-blue-100 mb-10
+        bg-white/70 rounded-3xl p-7 shadow-xl border border-gray-300 mb-10
         backdrop-blur-[2px] flex flex-col
       ">
-        <div className="text-base font-normal text-blue-800 mb-2 flex items-center gap-2">
+        <div className="text-base font-normal text-gray-600 mb-2 flex items-center gap-2">
           <BarChart className="w-5 h-5 text-sky-500" /> Sales per Month <span className="font-normal text-slate-500 text-xs">(12mo)</span>
         </div>
-        {loadingSales ? (
+        {loading ? (
           <div className="flex h-32 items-center justify-center">
             <Shimmer className="w-full h-24 rounded-lg" />
           </div>
-        ) : errorSales ? (
-          <div className="text-red-500 text-sm">{errorSales}</div>
+        ) : error ? (
+          <div className="text-red-500 text-sm">{error}</div>
         ) : (
           <ResponsiveContainer width="100%" height={170}>
             <BarChartRe data={salesPerMonth}>
@@ -180,11 +166,11 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-8">
-        <div className="bg-white/90 rounded-3xl shadow-xl border border-blue-100 p-7 flex flex-col">
-          <div className="text-base font-normal mb-3 text-blue-700 flex items-center gap-2">
+        <div className="bg-white/90 rounded-3xl shadow-xl border border-gray-300 p-7 flex flex-col">
+          <div className="text-base font-normal mb-3 text-gray-800 flex items-center gap-2">
             <UserCheck className="w-5 h-5 text-sky-400" /> Top Seller
           </div>
-          {loadingSales ? (
+          {loading ? (
             <div className="py-5"><Shimmer className="h-8 w-full rounded" /></div>
           ) : topSeller.length === 0 ? (
             <div className="py-5 text-gray-400 font-normal">No data available.</div>
@@ -201,29 +187,29 @@ export default function AdminDashboard() {
                     {i + 1}
                   </span>
                   <span className="flex-1 truncate">{r.seller || <span className="text-gray-400">(no name)</span>}</span>
-                  <span className="text-blue-500">{r.count} sales</span>
+                  <span className="text-gray-800">{r.count} sales</span>
                 </div>
               ))}
             </div>
           )}
         </div>
-        <div className="bg-white/90 rounded-3xl shadow-xl border border-blue-100 p-7 flex flex-col">
+        <div className="bg-white/90 rounded-3xl shadow-xl border border-gray-300 p-7 flex flex-col">
           <div className="flex items-center mb-3 gap-2">
             <Gem className="w-5 h-5 text-pink-400" />
-            <span className="text-base font-normal text-blue-700">Recent Sales</span>
+            <span className="text-base font-normal text-gray-800">Recent Sales</span>
           </div>
-          <div className="overflow-x-auto rounded-xl border border-blue-50">
+          <div className="overflow-x-auto rounded-xl border border-gray-100">
             <table className="w-full text-sm font-normal">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-white">
-                  <th className="p-2 text-sky-700 text-left">Seller</th>
-                  <th className="p-2 text-sky-700 text-left">Email</th>
-                  <th className="p-2 text-sky-700 text-left">License</th>
-                  <th className="p-2 text-sky-700 text-left">Price</th>
+                  <th className="p-2 text-gray-600 text-left">Seller</th>
+                  <th className="p-2 text-gray-600 text-left">Email</th>
+                  <th className="p-2 text-gray-600 text-left">License</th>
+                  <th className="p-2 text-gray-600 text-left">Price</th>
                 </tr>
               </thead>
               <tbody>
-                {loadingSales ? (
+                {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <tr key={i}>
                       <td colSpan={4} className="py-5"><Shimmer className="h-5 w-full rounded" /></td>
@@ -231,7 +217,7 @@ export default function AdminDashboard() {
                   ))
                 ) : latestSales.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="py-5 text-center text-gray-400">No data found.</td>
+                    <td colSpan={4} className="py-5 text-center text-gray-800">No data found.</td>
                   </tr>
                 ) : (
                   latestSales.map((row, i) => (
@@ -245,7 +231,7 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
-            <div className="mt-2 text-xs text-gray-400 font-normal">Showing 10 latest data</div>
+            <div className="mt-2 text-xs text-gray-800 font-normal">Showing 10 latest data</div>
           </div>
         </div>
       </div>

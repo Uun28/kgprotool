@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Users, Pencil,
   ArrowLeft, ArrowRight, Search
 } from 'lucide-react';
-import { LoginadminContext } from "../LoginadminContext";
 
 const API = 'https://minangkabau-gsm.store/admin.php';
 const statusColor = {
@@ -65,37 +64,38 @@ export default function AdminUser() {
     });
   }
 
-  async function handleAction({ action, user, value, fields, licensed, seller }) {
-    let mode, body;
-    if (action === 'delete') {
-      askConfirm('Delete this user?', () => handleAction({ action: 'delete-confirm', user }));
-      return;
-    } else if (action === 'delete-confirm') {
-      mode = 'deleteuser'; body = `id=${user.id}`;
-    } else if (action === 'resethwid') {
-      askConfirm('Reset HWID for this user?', () => handleAction({ action: 'resethwid-confirm', user }));
-      return;
-    } else if (action === 'resethwid-confirm') {
-      mode = 'resethwid'; body = `id=${user.id}`;
-    } else if (action === 'changepass') {
-      if (!value) return setAlert({ show: true, msg: 'Password required', color: 'red' });
-      mode = 'changepassword'; body = `id=${user.id}&password=${encodeURIComponent(value)}`;
-    } else if (action === 'edit') {
-      mode = 'updateuser';
-      body = `id=${user.id}` +
-        `&email=${encodeURIComponent(fields.email)}` +
-        `&role=${encodeURIComponent(fields.role)}` +
-        `&status=${encodeURIComponent(fields.status)}` +
-        `&expired=${encodeURIComponent(fields.expired)}` +
-        `&balance=${encodeURIComponent(fields.balance)}`;
-    } else if (action === 'addlicense') {
-      mode = 'addlicense';
-      const option = licenseOptions.find(opt => opt.value === licensed);
-      const month = option ? option.month : 3;
-      body = `id=${user.id}&month=${month}&licensed=${licensed}&seller=${seller}`;
-    } else return;
+ async function handleAction({ action, user, value, fields, licensed, seller }) {
+  let mode, body;
+  if (action === 'delete') {
+    askConfirm('Delete this user?', () => handleAction({ action: 'delete-confirm', user }));
+    return;
+  } else if (action === 'delete-confirm') {
+    mode = 'deleteuser'; body = `id=${user.id}`;
+  } else if (action === 'resethwid') {
+    askConfirm('Reset HWID for this user?', () => handleAction({ action: 'resethwid-confirm', user }));
+    return;
+  } else if (action === 'resethwid-confirm') {
+    mode = 'resethwid'; body = `id=${user.id}`;
+  } else if (action === 'changepass') {
+    if (!value) return setAlert({ show: true, msg: 'Password required', color: 'red' });
+    mode = 'changepassword'; body = `id=${user.id}&password=${encodeURIComponent(value)}`;
+  } else if (action === 'edit') {
+    mode = 'updateuser';
+    body = `id=${user.id}` +
+      `&email=${encodeURIComponent(fields.email)}` +
+      `&role=${encodeURIComponent(fields.role)}` +
+      `&status=${encodeURIComponent(fields.status)}` +
+      `&expired=${encodeURIComponent(fields.expired)}` +
+      `&balance=${encodeURIComponent(fields.balance)}`;
+  } else if (action === 'addlicense') {
+    mode = 'addlicense';
+    const option = licenseOptions.find(opt => opt.value === licensed);
+    const month = option ? option.month : 3;
+    body = `id=${user.id}&month=${month}&licensed=${licensed}&seller=${seller}`;
+  } else return;
 
-    setLoading(true);
+  setLoading(true);
+  try {
     const res = await fetch(`${API}?mode=${mode}`, {
       method: 'POST',
       credentials: 'include',
@@ -104,11 +104,14 @@ export default function AdminUser() {
     });
     const data = await res.json();
     setModal({ open: false, user: null });
-    setLoading(false);
     setAlert({ show: true, msg: data.message || 'Action success', color: data.status === 'success' ? 'green' : 'red' });
     if (data.status === 'success') getUserList();
-    setTimeout(() => setAlert({ show: false, msg: '', color: '' }), 2000);
+  } catch (error) {
+    setAlert({ show: true, msg: 'Network error', color: 'red' });
   }
+  setLoading(false);
+}
+
 
   return (
     <div className="max-w-6xl mx-auto w-full py-10 px-2 md:px-0">
@@ -360,7 +363,6 @@ export default function AdminUser() {
 
 
 function UserActionModal({ user, onClose, onAction }) {
-  const { loginadmin } = useContext(LoginadminContext);
   const [tab, setTab] = useState('detail');
   const [editForm, setEditForm] = useState({
     email: user.email,

@@ -6,7 +6,6 @@ export async function POST(req) {
       return Response.json({ message: "Token and password are required." }, { status: 400 });
     }
 
-    // POST ke backend PHP
     const resp = await fetch('https://minangkabau-gsm.store/resetpassword.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

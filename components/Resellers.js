@@ -2,6 +2,14 @@ import { Globe, MessageCircle, Send, Facebook as FacebookIcon } from "lucide-rea
 
 export default function Resellers() {
   const resellers = [
+     {
+      name: "HIUNLOCK",
+      logo: "/HiUnlock.jpg",
+      whatsapp: "https://wa.me/+447916641385",
+      telegram: "https://t.me/hiunlock",
+      website: "https://www.hiunlock.com",
+      country: "WorldWide",
+    },
     {
       name: "GSM RAJA",
       logo: "/gsmraja.jpg",
@@ -18,15 +26,7 @@ export default function Resellers() {
       facebook: "https://www.facebook.com/hary.sulteng.2025",
       website: "",
       country: "INDONESIA",
-    },
-    {
-      name: "HIUNLOCK",
-      logo: "/HiUnlock.jpg",
-      whatsapp: "https://wa.me/+447916641385",
-      telegram: "https://t.me/hiunlock",
-      website: "https://www.hiunlock.com",
-      country: "United Kingdom",
-    },
+    }, 
     {
       name: "KGPROTOOL",
       logo: "/reseller.png",

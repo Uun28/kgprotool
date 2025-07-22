@@ -45,7 +45,7 @@ export default function Hero() {
     >
       {/* Badge Version */}
       <div
-        className="inline-block mb-4 px-6 py-1.5 text-sm rounded-full bg-white/30 backdrop-blur-md text-sky-700 font-medium shadow-sm border border-white/20"
+        className="inline-block mb-4 px-6 py-1.5 text-sm rounded-full bg-white/30 backdrop-blur-md text-sky-700 font-normal shadow-sm border border-white/20"
         data-aos="fade-up"
       >
         Version 2.0

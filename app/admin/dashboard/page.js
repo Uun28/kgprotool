@@ -1,8 +1,40 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Users, Wallet, UserCheck, Ban, Gem, Timer, BarChart } from "lucide-react";
-import { ResponsiveContainer, BarChart as BarChartRe, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import {
+  Users, Wallet, UserCheck, Ban, Gem, Timer, BarChart
+} from "lucide-react";
+import {
+  ResponsiveContainer,
+  BarChart as BarChartRe,
+  Bar, XAxis, YAxis, Tooltip, CartesianGrid
+} from 'recharts';
+import { API } from '@/lib/config';
+
+function Shimmer({ className = '' }) {
+  return (
+    <div className={`bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse ${className}`} />
+  );
+}
+
+function StatCard({ icon, label, value, color, iconBg }) {
+  return (
+    <div className={`
+      group relative rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center shadow-xl border
+      bg-white/70 border-slate-200 backdrop-blur-lg
+      hover:scale-105 hover:shadow-2xl transition-all duration-300
+      ${color}
+    `}>
+      <div className={`flex items-center justify-center rounded-full p-2 mb-2 shadow-md ${iconBg}`}>
+        {icon}
+      </div>
+      <div className="text-xs sm:text-sm font-normal text-slate-600">{label}</div>
+      <div className="text-2xl font-normal text-slate-800 mt-1 tracking-tight drop-shadow bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-500 bg-clip-text text-transparent">
+        {value}
+      </div>
+    </div>
+  );
+}
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -13,10 +45,9 @@ export default function AdminDashboard() {
   const [errorSales, setErrorSales] = useState('');
 
   useEffect(() => {
-    fetch('https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php?mode=getuser', { credentials: 'include' })
+    fetch(`${API}?mode=getuser`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
-                console.log("API getuser response:", data);   // <<--- LIHAT DI CONSOLE
         if (data.status === 'success') setUsers(data.data);
         else setError(data.message || 'Failed to fetch users');
         setLoading(false);
@@ -28,7 +59,7 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    fetch('https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php?mode=getpenjualan', { credentials: 'include' })
+    fetch(`${API}?mode=getpenjualan`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') setSales(data.data);
@@ -41,6 +72,7 @@ export default function AdminDashboard() {
       });
   }, []);
 
+
   const today = new Date();
   function monthYearKey(dt) {
     const d = new Date(dt);
@@ -48,6 +80,8 @@ export default function AdminDashboard() {
   }
 
   const totalUser = users.length;
+  const adminUser = users.filter(u => u.role === 'admin').length;
+  const resellerUser = users.filter(u => u.role === 'resellers').length;
   const activeUser = users.filter(u => u.status === 'active').length;
   const expiredUser = users.filter(u => u.status === 'expired').length;
   const bannedUser = users.filter(u => u.status === 'banned').length;
@@ -60,7 +94,10 @@ export default function AdminDashboard() {
     const result = {};
     for (let i = 11; i >= 0; i--) {
       const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      result[monthYearKey(d)] = { month: d.toLocaleString('default', { month: 'short', year: '2-digit' }), total: 0, income: 0 };
+      result[monthYearKey(d)] = {
+        month: d.toLocaleString('default', { month: 'short', year: '2-digit' }),
+        total: 0, income: 0
+      };
     }
     sales.forEach(s => {
       if (!s.tanggal) return;
@@ -73,7 +110,7 @@ export default function AdminDashboard() {
     return Object.values(result);
   }, [sales]);
 
-  const topSeller = (() => {
+  const topSeller = useMemo(() => {
     const bySeller = {};
     sales.forEach(s => {
       if (!bySeller[s.seller]) bySeller[s.seller] = 0;
@@ -82,104 +119,136 @@ export default function AdminDashboard() {
     const arr = Object.entries(bySeller).map(([seller, count]) => ({ seller, count }));
     arr.sort((a, b) => b.count - a.count);
     return arr.slice(0, 3);
-  })();
+  }, [sales]);
 
   const latestSales = sales.slice(0, 10);
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-2 md:px-0">
-      <h1 className="text-4xl md:text-5xl font-normal mb-8 text-center bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500 text-transparent bg-clip-text drop-shadow-xl tracking-tight">
-        Admin Dashboard
+    <div className="max-w-7xl mx-auto w-full px-2 sm:px-6 md:px-8 py-8">
+      <h1 className="
+        text-4xl md:text-5xl font-normal text-center mb-8 tracking-tight
+        bg-gradient-to-br from-blue-700 via-sky-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-xl
+      ">
+        Dashboard
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-8">
-        <StatCard icon={<Users className="w-7 h-7 text-blue-600" />} label="Total Users" value={totalUser} color="from-blue-200 via-blue-100 to-white" />
-        <StatCard icon={<UserCheck className="w-7 h-7 text-green-500" />} label="Active Users" value={activeUser} color="from-green-100 via-green-50 to-white" />
-        <StatCard icon={<Timer className="w-7 h-7 text-yellow-400" />} label="Expired Users" value={expiredUser} color="from-yellow-100 via-yellow-50 to-white" />
-        <StatCard icon={<Gem className="w-7 h-7 text-gray-400" />} label="No License Users" value={nolicenseUser} color="from-slate-100 via-slate-50 to-white" />
-        <StatCard icon={<Ban className="w-7 h-7 text-red-500" />} label="Banned Users" value={bannedUser} color="from-rose-100 via-red-50 to-white" />
-        <StatCard icon={<Wallet className="w-7 h-7 text-green-700" />} label="Total Income" value={`$${totalIncome.toLocaleString()}`} color="from-emerald-100 via-green-50 to-white" />
-      </div>
-
-      <div className="bg-white/70 rounded-3xl p-6 shadow-xl border border-blue-100 mb-8">
-        <div className="text-base font-normal text-blue-800 mb-2 flex items-center gap-2">
-          <BarChart className="w-5 h-5 text-blue-400" /> Sales per Month (last 12 months)
-        </div>
-        <ResponsiveContainer width="100%" height={140}>
-          <BarChartRe data={salesPerMonth}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Bar dataKey="income" fill="#38bdf8" />
-          </BarChartRe>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="bg-white/80 rounded-3xl shadow-xl border border-blue-100 p-6 mb-8">
-        <div className="text-base font-normal mb-3 text-blue-700 flex items-center gap-2">
-          <UserCheck className="w-5 h-5 text-sky-400" /> Top Seller
-        </div>
-        {topSeller.length === 0 ? (
-          <div className="py-4 text-gray-500 font-normal">No data available.</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-3 md:gap-5 mb-12">
+        {loading ? (
+          Array.from({ length: 8 }).map((_, i) =>
+            <div key={i} className="rounded-2xl h-24 sm:h-28 bg-white/70 shadow-lg border border-slate-100">
+              <Shimmer className="w-full h-full rounded-2xl" />
+            </div>
+          )
         ) : (
-          <div className="flex flex-col gap-2">
-            {topSeller.map((r, i) => (
-              <div key={r.seller} className="flex items-center gap-3 font-normal">
-                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${i === 0 ? 'bg-gradient-to-r from-amber-400 to-yellow-300' : i === 1 ? 'bg-gradient-to-r from-gray-400 to-gray-300' : 'bg-gradient-to-r from-yellow-800 to-yellow-600'}`}>{i + 1}</span>
-                <span className="flex-1">{r.seller || <span className="text-gray-400">(no name)</span>}</span>
-                <span className="text-blue-500">{r.count} sales</span>
-              </div>
-            ))}
-          </div>
+          <>
+            <StatCard icon={<Users className="w-6 h-6" />} label="Total Users" value={totalUser} color="bg-gradient-to-tr from-blue-50 to-white" iconBg="bg-blue-200/50" />
+            <StatCard icon={<UserCheck className="w-6 h-6" />} label="Admin" value={adminUser} color="bg-gradient-to-tr from-indigo-50 to-white" iconBg="bg-indigo-200/50" />
+            <StatCard icon={<Gem className="w-6 h-6" />} label="Resellers" value={resellerUser} color="bg-gradient-to-tr from-pink-50 to-white" iconBg="bg-pink-200/50" />
+            <StatCard icon={<UserCheck className="w-6 h-6" />} label="Active" value={activeUser} color="bg-gradient-to-tr from-green-50 to-white" iconBg="bg-green-200/50" />
+            <StatCard icon={<Timer className="w-6 h-6" />} label="Expired" value={expiredUser} color="bg-gradient-to-tr from-yellow-50 to-white" iconBg="bg-yellow-200/50" />
+            <StatCard icon={<Gem className="w-6 h-6" />} label="No License" value={nolicenseUser} color="bg-gradient-to-tr from-slate-50 to-white" iconBg="bg-slate-200/50" />
+            <StatCard icon={<Ban className="w-6 h-6" />} label="Banned" value={bannedUser} color="bg-gradient-to-tr from-red-50 to-white" iconBg="bg-red-200/50" />
+            <StatCard icon={<Wallet className="w-6 h-6" />} label="Income" value={`$${totalIncome.toLocaleString()}`} color="bg-gradient-to-tr from-emerald-50 to-white" iconBg="bg-emerald-200/50" />
+          </>
         )}
       </div>
 
-      <div className="bg-white/90 rounded-3xl shadow-xl border border-blue-100 p-7 mb-12">
-        <div className="flex items-center mb-2 gap-2">
-          <Gem className="w-5 h-5 text-sky-400" />
-          <span className="text-base font-normal">Recent Sales</span>
+      <div className="
+        bg-white/70 rounded-3xl p-7 shadow-xl border border-blue-100 mb-10
+        backdrop-blur-[2px] flex flex-col
+      ">
+        <div className="text-base font-normal text-blue-800 mb-2 flex items-center gap-2">
+          <BarChart className="w-5 h-5 text-sky-500" /> Sales per Month <span className="font-normal text-slate-500 text-xs">(12mo)</span>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm rounded-xl overflow-hidden shadow border border-blue-50 font-normal">
-            <thead>
-              <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-white">
-                <th className="p-2 font-normal text-sky-700 text-left">Seller</th>
-                <th className="p-2 font-normal text-sky-700 text-left">Email</th>
-                <th className="p-2 font-normal text-sky-700 text-left">License</th>
-                <th className="p-2 font-normal text-sky-700 text-left">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {latestSales.map((row, i) => (
-                <tr key={row.id} className="even:bg-blue-50/40 hover:bg-blue-100/60 transition">
-                  <td className="p-2 font-normal">{row.seller}</td>
-                  <td className="p-2 font-normal">{row.email}</td>
-                  <td className="p-2 font-normal">{row.licensed}</td>
-                  <td className="p-2 font-normal">${priceMap[row.licensed] || 0}</td>
-                </tr>
+        {loadingSales ? (
+          <div className="flex h-32 items-center justify-center">
+            <Shimmer className="w-full h-24 rounded-lg" />
+          </div>
+        ) : errorSales ? (
+          <div className="text-red-500 text-sm">{errorSales}</div>
+        ) : (
+          <ResponsiveContainer width="100%" height={170}>
+            <BarChartRe data={salesPerMonth}>
+              <CartesianGrid strokeDasharray="2 2" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 13, fill: "#64748b" }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 13, fill: "#64748b" }} />
+              <Tooltip contentStyle={{ borderRadius: 12, fontSize: 14 }} />
+              <Bar dataKey="income" fill="#38bdf8" radius={[8, 8, 0, 0]} />
+            </BarChartRe>
+          </ResponsiveContainer>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-8">
+        <div className="bg-white/90 rounded-3xl shadow-xl border border-blue-100 p-7 flex flex-col">
+          <div className="text-base font-normal mb-3 text-blue-700 flex items-center gap-2">
+            <UserCheck className="w-5 h-5 text-sky-400" /> Top Seller
+          </div>
+          {loadingSales ? (
+            <div className="py-5"><Shimmer className="h-8 w-full rounded" /></div>
+          ) : topSeller.length === 0 ? (
+            <div className="py-5 text-gray-400 font-normal">No data available.</div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {topSeller.map((r, i) => (
+                <div key={r.seller} className="flex items-center gap-4 font-normal">
+                  <span className={`
+                    w-8 h-8 rounded-full flex items-center justify-center font-normal text-white
+                    text-base shadow ${i === 0 ? 'bg-gradient-to-br from-amber-400 to-yellow-300'
+                    : i === 1 ? 'bg-gradient-to-br from-gray-400 to-gray-200'
+                    : 'bg-gradient-to-br from-yellow-800 to-yellow-500'}
+                  `}>
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 truncate">{r.seller || <span className="text-gray-400">(no name)</span>}</span>
+                  <span className="text-blue-500">{r.count} sales</span>
+                </div>
               ))}
-            </tbody>
-          </table>
-          <div className="mt-2 text-xs text-gray-400 font-normal">Showing 10 latest data</div>
+            </div>
+          )}
+        </div>
+        <div className="bg-white/90 rounded-3xl shadow-xl border border-blue-100 p-7 flex flex-col">
+          <div className="flex items-center mb-3 gap-2">
+            <Gem className="w-5 h-5 text-pink-400" />
+            <span className="text-base font-normal text-blue-700">Recent Sales</span>
+          </div>
+          <div className="overflow-x-auto rounded-xl border border-blue-50">
+            <table className="w-full text-sm font-normal">
+              <thead className="sticky top-0 z-10">
+                <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-white">
+                  <th className="p-2 text-sky-700 text-left">Seller</th>
+                  <th className="p-2 text-sky-700 text-left">Email</th>
+                  <th className="p-2 text-sky-700 text-left">License</th>
+                  <th className="p-2 text-sky-700 text-left">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loadingSales ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <tr key={i}>
+                      <td colSpan={4} className="py-5"><Shimmer className="h-5 w-full rounded" /></td>
+                    </tr>
+                  ))
+                ) : latestSales.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="py-5 text-center text-gray-400">No data found.</td>
+                  </tr>
+                ) : (
+                  latestSales.map((row, i) => (
+                    <tr key={row.id} className="even:bg-blue-50/40 hover:bg-blue-100/60 transition-colors">
+                      <td className="p-2">{row.seller}</td>
+                      <td className="p-2">{row.email}</td>
+                      <td className="p-2">{row.licensed}</td>
+                      <td className="p-2">${priceMap[row.licensed] || 0}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+            <div className="mt-2 text-xs text-gray-400 font-normal">Showing 10 latest data</div>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function StatCard({ icon, label, value, color }) {
-  return (
-    <div
-      className={`
-        relative rounded-3xl p-6 shadow-xl border border-blue-100 bg-white/70 backdrop-blur-lg
-        flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.04] hover:shadow-2xl
-        bg-gradient-to-tr ${color}
-      `}
-    >
-      <div className="mb-2">{icon}</div>
-      <div className="text-base font-normal text-slate-800">{label}</div>
-      <div className="text-2xl md:text-3xl font-normal tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-500 mb-1">{value}</div>
     </div>
   );
 }

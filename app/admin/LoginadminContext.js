@@ -1,8 +1,8 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
-export const LoginUserContext = createContext();
+export const LoginadminContext = createContext();
 
-export function LoginUserProvider({ children }) {
+export function LoginadminProvider({ children }) {
   const [loginUser, setLoginUser] = useState(null);
 
   useEffect(() => {
@@ -12,8 +12,8 @@ export function LoginUserProvider({ children }) {
   }, []);
 
   return (
-    <LoginUserContext.Provider value={{ loginUser, setLoginUser }}>
+    <LoginadminContext.Provider value={{ loginUser, setLoginUser }}>
       {children}
-    </LoginUserContext.Provider>
+    </LoginadminContext.Provider>
   );
 }

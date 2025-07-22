@@ -108,7 +108,7 @@ export default function Resellers() {
             </div>
 
            {reseller.country && (
-              <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-medium rounded-full shadow-lg flex items-center gap-2 animate-pulse z-20">
+              <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-normal rounded-full shadow-lg flex items-center gap-2 animate-pulse z-20">
                 {reseller.country}
               </span>
             )}

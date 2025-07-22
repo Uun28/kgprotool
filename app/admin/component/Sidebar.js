@@ -13,7 +13,7 @@ const menu = [
   { name: "Selling", icon: FileText, path: "/admin/selling" },
 ];
 
-const API_LOGOUT = 'https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php?mode=logout';
+const API_LOGOUT = 'https://minangkabau-gsm.store/admin.php?mode=logout';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -74,7 +74,7 @@ export default function Sidebar() {
                 `}
               ></span>
               <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-sky-600" : "text-gray-400 group-hover:text-sky-500"}`} />
-              <span className={`${active ? "font-medium text-sky-700 drop-shadow" : ""}`}>{item.name}</span>
+              <span className={`${active ? "font-normal text-sky-700 drop-shadow" : ""}`}>{item.name}</span>
             </Link>
           );
         })}

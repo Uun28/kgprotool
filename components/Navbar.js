@@ -88,7 +88,7 @@ export default function Navbar() {
                 key={menu.id}
                 href={menu.href}
                 onClick={(e) => handleMenuClick(e, menu.href)}
-                className={`relative text-base font-medium tracking-wide transition-all duration-300 ${
+                className={`relative text-base font-normal tracking-wide transition-all duration-300 ${
                   isActive ? "text-sky-600" : "text-gray-700 hover:text-sky-500"
                 }`}
               >
@@ -169,7 +169,7 @@ export default function Navbar() {
               key={menu.id}
               href={menu.href}
               onClick={(e) => handleMenuClick(e, menu.href)}
-              className="text-lg font-medium py-2 px-2 rounded-lg hover:text-sky-600 hover:bg-sky-50/40 transition-all duration-300"
+              className="text-lg font-normal py-2 px-2 rounded-lg hover:text-sky-600 hover:bg-sky-50/40 transition-all duration-300"
             >
               {menu.name}
             </a>

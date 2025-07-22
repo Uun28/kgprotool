@@ -16,6 +16,7 @@ export default function AdminDashboard() {
     fetch('https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php?mode=getuser', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
+                console.log("API getuser response:", data);   // <<--- LIHAT DI CONSOLE
         if (data.status === 'success') setUsers(data.data);
         else setError(data.message || 'Failed to fetch users');
         setLoading(false);

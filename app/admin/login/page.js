@@ -39,6 +39,8 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (data.status === 'success') {
+        localStorage.setItem('loginUser', JSON.stringify(data.user));
+        router.replace('/admin/dashboard');
         router.replace('/admin/dashboard');
       } else {
         setError(data.message || 'Login gagal');

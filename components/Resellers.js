@@ -20,12 +20,12 @@ export default function Resellers() {
       country: "INDONESIA",
     },
     {
-      name: "KGPROTOOL",
-      logo: "/reseller.png",
-      whatsapp: "",
-      telegram: "",
-      website: "",
-      country: "",
+      name: "HIUNLOCK",
+      logo: "/HiUnlock.jpg",
+      whatsapp: "https://wa.me/+447916641385",
+      telegram: "https://t.me/hiunlock",
+      website: "https://www.hiunlock.com",
+      country: "United Kingdom",
     },
     {
       name: "KGPROTOOL",

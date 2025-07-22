@@ -1,21 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import {
   Users, Pencil,
   ArrowLeft, ArrowRight, Search
 } from 'lucide-react';
+import { LoginUserContext } from "../LoginUserContext";
+
+
 
 const API = 'https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php';
-
 const statusColor = {
   active: "bg-green-50 text-green-700 border border-green-200",
   expired: "bg-yellow-50 text-yellow-800 border border-yellow-200",
   banned: "bg-red-50 text-red-600 border border-red-200",
   nolicense: "bg-gray-50 text-gray-700 border border-gray-200",
 };
-const roles = ["admin", "reseller", "user"];
+const roles = ["admin", "resellers", "user"];
 const statuses = ["active", "expired", "nolicense", "banned"];
+const licenseOptions = [
+  { value: 3, label: '3 Bulan', enum: '3month' },
+  { value: 6, label: '6 Bulan', enum: '6month' },
+  { value: 12, label: '12 Bulan', enum: '12month' },
+];
 
 export default function AdminUser() {
   const [users, setUsers] = useState([]);
@@ -215,16 +222,18 @@ export default function AdminUser() {
 }
 
 function UserActionModal({ user, onClose, onAction }) {
+  const { loginUser } = useContext(LoginUserContext);
   const [tab, setTab] = useState('detail');
   const [editForm, setEditForm] = useState({
     email: user.email,
     role: user.role,
     status: user.status,
-    expired: user.expired,
     balance: user.balance,
   });
   const [newPass, setNewPass] = useState('');
-
+  const [licenseMonth, setLicenseMonth] = useState(3);
+  const [licenseType, setLicenseType] = useState('3month');
+  const [seller, setSeller] = useState('');
   return (
     <div className="fixed inset-0 z-[99] flex items-center justify-center bg-black/30 backdrop-blur-[2px] transition-all">
       <div className="bg-white/95 rounded-2xl shadow-2xl border border-blue-100 max-w-lg w-full p-8 animate-in fade-in relative">
@@ -239,8 +248,11 @@ function UserActionModal({ user, onClose, onAction }) {
         <div className="flex gap-2 mb-6">
           <button className={`flex-1 py-2 rounded-lg font-normal transition-all ${tab === 'detail' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-400'}`} onClick={() => setTab('detail')}>Detail</button>
           <button className={`flex-1 py-2 rounded-lg font-normal transition-all ${tab === 'edit' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-400'}`} onClick={() => setTab('edit')}>Edit</button>
-          <button className={`flex-1 py-2 rounded-lg font-normal transition-all ${tab === 'action' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-400'}`} onClick={() => setTab('action')}>Action</button>
+          <button className={`flex-1 py-2 rounded-lg font-normal transition-all ${tab === 'license' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-400'}`} onClick={() => setTab('license')}>Add License</button>
+          <button className={`flex-1 py-2 rounded-lg font-normal transition-all ${tab === 'action' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-400'}`} onClick={() => setTab('action')}>Options</button>
         </div>
+
+        {/* DETAIL */}
         {tab === 'detail' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <Field label="ID" value={user.id} />
@@ -254,6 +266,8 @@ function UserActionModal({ user, onClose, onAction }) {
             <Field label="HWID Change" value={user.hwidchange} />
           </div>
         )}
+
+        {/* EDIT: EXPIRED CUMA VIEW */}
         {tab === 'edit' && (
           <form
             className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
@@ -265,7 +279,7 @@ function UserActionModal({ user, onClose, onAction }) {
             <Field label="Email" value={editForm.email} editable name="email" onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} />
             <Field label="Role" value={editForm.role} editable name="role" select options={roles} onChange={e => setEditForm(f => ({ ...f, role: e.target.value }))} />
             <Field label="Status" value={editForm.status} editable name="status" select options={statuses} onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))} />
-            <Field label="Expired" value={editForm.expired} editable name="expired" onChange={e => setEditForm(f => ({ ...f, expired: e.target.value }))} />
+            <Field label="Expired" value={user.expired} /> {/* BUKAN editable */}
             <Field label="Balance" value={editForm.balance} editable name="balance" onChange={e => setEditForm(f => ({ ...f, balance: e.target.value }))} />
             <div className="col-span-2 flex gap-2 mt-2">
               <button
@@ -280,6 +294,45 @@ function UserActionModal({ user, onClose, onAction }) {
             </div>
           </form>
         )}
+
+        {tab === 'license' && (
+        <form className="flex flex-col gap-4"
+            onSubmit={e => {
+            e.preventDefault();
+            onAction({
+                action: 'addlicense',
+                user,
+                licensed: licenseType,
+                month: Number(licenseType.replace('month', '')), 
+                seller: loginUser.email,
+            });
+            }}>
+            <label className="flex flex-col gap-1 font-normal text-gray-700">
+            License Type
+            <select
+                value={licenseType}
+                onChange={e => setLicenseType(e.target.value)}
+                className="rounded-lg border border-blue-100 px-3 py-2 bg-white/80 focus:outline-none focus:border-sky-300"
+            >
+                {licenseOptions.map(opt => (
+                <option value={opt.value} key={opt.value}>{opt.label}</option>
+                ))}
+            </select>
+            </label>
+            <div className="text-sm text-gray-600">
+            Seller: <span className="font-bold">{loginUser?.email || '-'}</span>
+            </div>
+            <button
+            className="py-2 rounded-lg bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 text-white font-normal hover:from-sky-500 hover:to-blue-700 border border-blue-200 transition"
+            type="submit"
+            >
+            Add License
+            </button>
+        </form>
+        )}
+
+
+        {/* ACTION */}
         {tab === 'action' && (
           <div className="flex flex-col gap-4">
             <button className="py-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-700 font-normal border border-green-200 transition"
@@ -305,6 +358,7 @@ function UserActionModal({ user, onClose, onAction }) {
     </div>
   );
 }
+
 
 function Field({ label, value, editable, name, onChange, select, options }) {
   if (editable) {

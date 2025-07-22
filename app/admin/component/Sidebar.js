@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Users, FileText, LogOut,
 } from 'lucide-react';
+import { useState } from 'react';
 
 const menu = [
   { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
@@ -12,8 +13,24 @@ const menu = [
   { name: "Selling", icon: FileText, path: "/admin/selling" },
 ];
 
+const API_LOGOUT = 'https://minangkabau-gsm.store/a2dwcm90b29sdXVuZ2FudGVuZzI4MzE=/api-admin.php?mode=logout';
+
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  async function handleLogout(e) {
+    e.preventDefault();
+    setLoading(true);
+    await fetch(API_LOGOUT, {
+      method: 'POST',
+      credentials: 'include'
+    });
+    setLoading(false);
+    // redirect to login
+    router.push('/admin/login');
+  }
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-64 z-50 bg-white/70 backdrop-blur-2xl border-r border-blue-100 flex flex-col shadow-2xl transition-all duration-300">
@@ -63,21 +80,23 @@ export default function Sidebar() {
         })}
       </nav>
       {/* Logout Button */}
-      <form action="/admin/logout" method="POST" className="px-4 pb-7 mt-auto">
+      <div className="px-4 pb-7 mt-auto">
         <button
-          type="submit"
-          className="
+          onClick={handleLogout}
+          disabled={loading}
+          className={`
             flex items-center gap-3 px-5 py-2.5 rounded-xl w-full
             text-base font-normal text-red-600 bg-red-50/60
             hover:bg-gradient-to-r hover:from-red-100 hover:to-white
             transition-all shadow-sm border border-transparent hover:border-red-200
-          "
+            ${loading && "opacity-50 pointer-events-none"}
+          `}
           style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
         >
           <LogOut className="w-5 h-5" />
-          Logout
+          {loading ? "Logging out..." : "Logout"}
         </button>
-      </form>
+      </div>
 
       {/* Blur effect layer (layered glass) */}
       <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/40 via-blue-50/10 to-transparent blur-[1px] opacity-60 -z-10"></div>

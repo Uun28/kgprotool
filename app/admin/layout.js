@@ -11,7 +11,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export default function DashboardLayout({ children }) {
+export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 

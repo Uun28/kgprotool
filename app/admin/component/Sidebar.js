@@ -31,15 +31,15 @@ export default function Sidebar() {
     router.push('/admin/login');
   }
 
-  // =============== DESKTOP SIDEBAR (md ke atas) ===============
+  // DESKTOP SIDEBAR (md ke atas)
   const DesktopSidebar = (
-    <aside className="hidden md:flex fixed top-0 left-0 h-screen w-64 z-50 bg-white/70 backdrop-blur-2xl border-r border-blue-100 flex-col shadow-2xl transition-all duration-300">
+    <aside className="hidden md:flex fixed top-0 left-0 h-screen w-64 z-50 bg-white/70 backdrop-blur-2xl border-r border-blue-100 flex-col shadow-2xl transition-all duration-300 select-none">
       {/* Brand / Logo */}
       <div className="px-8 py-7 flex items-center gap-3 border-b border-blue-100 mb-2">
-        <div className="p-1.5 rounded-2xl shadow-md">
+        <div className="p-1.5 rounded-2xl shadow-md bg-gradient-to-tr from-sky-200 via-blue-100 to-white/60">
           <img src="/KGPro.ico" className="w-8 h-8 rounded-xl bg-white" alt="Logo" />
         </div>
-        <span className="text-xl font-normal tracking-tight bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
+        <span className="text-xl font-normal tracking-tight bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow">
           KGPROTOOL
         </span>
       </div>
@@ -60,7 +60,7 @@ export default function Sidebar() {
                 group relative flex items-center gap-3 px-5 py-2.5 rounded-xl cursor-pointer
                 text-base font-normal transition-all
                 ${active
-                  ? "bg-gradient-to-r from-sky-400/20 via-blue-400/10 to-blue-500/10 text-sky-700 shadow"
+                  ? "bg-gradient-to-r from-sky-400/30 via-blue-400/10 to-blue-500/10 text-sky-700 shadow"
                   : "hover:bg-gradient-to-r hover:from-sky-100/80 hover:via-blue-50 hover:to-white text-gray-700"}
               `}
               style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
@@ -85,8 +85,8 @@ export default function Sidebar() {
           disabled={loading}
           className={`
             flex items-center gap-3 px-5 py-2.5 rounded-xl w-full
-            text-base font-normal text-red-600 bg-red-50/60
-            hover:bg-gradient-to-r hover:from-red-100 hover:to-white
+            text-base font-normal text-red-600 bg-red-50/70
+            hover:bg-gradient-to-r hover:from-red-200 hover:to-white
             transition-all shadow-sm border border-transparent hover:border-red-200
             ${loading && "opacity-50 pointer-events-none"}
           `}
@@ -96,13 +96,13 @@ export default function Sidebar() {
           {loading ? "Logging out..." : "Logout"}
         </button>
       </div>
-      <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/40 via-blue-50/10 to-transparent blur-[1px] opacity-60 -z-10"></div>
+      <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/30 via-blue-50/10 to-transparent blur-[1px] opacity-50 -z-10"></div>
     </aside>
   );
 
-  // =============== BOTTOM NAVBAR (tablet & mobile) ===============
+  // BOTTOM NAVBAR (tablet & mobile)
   const BottomNavbar = (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-t border-blue-100 flex justify-around items-center h-16 shadow-2xl">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-blue-100 flex justify-around items-center h-16 shadow-[0_2px_18px_2px_rgba(56,189,248,0.09)]">
       {menu.map((item) => {
         const Icon = item.icon;
         const active = pathname === item.path;
@@ -112,7 +112,8 @@ export default function Sidebar() {
             key={item.name}
             className={`
               flex flex-col items-center justify-center gap-0.5 px-2 py-1.5
-              text-xs font-medium transition-all
+              text-xs font-medium transition-all duration-150
+              relative
               ${active
                 ? "text-sky-600"
                 : "text-gray-400 hover:text-sky-500"}
@@ -121,6 +122,9 @@ export default function Sidebar() {
           >
             <Icon className={`w-6 h-6`} />
             <span>{item.name}</span>
+            {active && (
+              <span className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-8 h-1 rounded-full bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-400 shadow-md"></span>
+            )}
           </Link>
         );
       })}
@@ -130,18 +134,19 @@ export default function Sidebar() {
         disabled={loading}
         className={`
           flex flex-col items-center justify-center gap-0.5 px-2 py-1.5
-          text-xs font-medium text-red-600
+          text-xs font-normal text-red-600
+          relative
           ${loading && "opacity-50 pointer-events-none"}
         `}
         style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif' }}
       >
         <LogOut className="w-6 h-6" />
         <span>{loading ? "..." : "Logout"}</span>
+        {/* Active dot indicator jika logout diklik (opsional) */}
       </button>
     </nav>
   );
 
-  // =============== RENDER BOTH (conditionally with Tailwind) ===============
   return (
     <>
       {DesktopSidebar}

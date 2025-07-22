@@ -1,5 +1,5 @@
 'use client'
-import { CheckCircle, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 export default function Plan() {
   const plans = [
@@ -37,11 +37,12 @@ export default function Plan() {
   return (
     <section
       id="plan"
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-10 py-20"
+      className="min-h-screen flex flex-col items-center justify-center px-4 md:px-10 py-20"
+      // Tidak ada background apa pun di sini!
     >
       {/* Title */}
       <div className="text-center mb-14 max-w-xl">
-          <h2 className="text-3xl md:text-4xl text-gray-800 tracking-tight">
+        <h2 className="text-3xl md:text-4xl text-gray-800 tracking-tight font-normal">
           <span className="bg-gradient-to-r from-sky-500 to-blue-600 text-transparent bg-clip-text">
             Choose Your Plan
           </span>
@@ -56,25 +57,30 @@ export default function Plan() {
         {plans.map((plan, idx) => {
           const isPopular = plan.popular;
           return (
-           <div
-                key={idx}
-                className={`
-                  relative flex flex-col rounded-2xl text-center
-                  ${isPopular 
-                    ? "bg-white/70 ring-2 ring-sky-200 px-8 py-11 scale-105 z-10 shadow-[0_16px_48px_-8px_rgba(56,189,248,0.20)]" 
-                    : "bg-white/50 px-7 py-9 scale-100"}
-                  backdrop-blur-md shadow-xl border border-sky-200
-                  transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:border-sky-400/70
-                  max-w-md mx-auto group
-                `}
-              >
-
+            <div
+              key={idx}
+              className={`
+                relative flex flex-col rounded-2xl text-center
+                ${isPopular 
+                  ? "ring-2 ring-sky-200 px-8 py-11 z-10 shadow-xl" 
+                  : "px-7 py-9"}
+                border border-sky-200
+                transition-all duration-300 hover:shadow-2xl hover:-translate-y-2
+                max-w-full mx-auto
+                bg-transparent
+              `}
+              style={{
+                background: "transparent",
+              }}
+            >
               {/* Popular Badge */}
               {isPopular && (
-                <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-normal rounded-full shadow-lg flex items-center gap-2 animate-pulse">
-                  <Star className="w-4 h-4 text-yellow-300 drop-shadow" />
-                  Most Popular
-                </span>
+                <div className="flex justify-center mb-2">
+                  <span className="inline-flex items-center gap-2 px-5 py-1.5 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white text-xs font-normal rounded-full shadow-lg">
+                    <Star className="w-4 h-4 text-yellow-300 drop-shadow" />
+                    Most Popular
+                  </span>
+                </div>
               )}
 
               {/* Title & Price */}
@@ -82,7 +88,6 @@ export default function Plan() {
                 {plan.title}
               </h3>
               <div className="flex items-baseline justify-center mt-1 gap-3">
-                {/* Jika ada originalPrice, tampilkan harga coret */}
                 {plan.originalPrice && (
                   <span className="text-lg md:text-xl text-gray-400 line-through font-normal">
                     {plan.originalPrice}
@@ -93,7 +98,6 @@ export default function Plan() {
                   {plan.price}
                 </span>
               </div>
-              {/* Badge discount jika popular */}
               {isPopular && (
                 <div className="flex justify-center mt-1">
                   <span className="inline-block text-xs md:text-sm text-blue-600 bg-blue-100 rounded-full px-3 py-0.5 font-normal shadow">
@@ -113,7 +117,9 @@ export default function Plan() {
               <ul className={`mt-1 space-y-2 ${isPopular ? "text-sm md:text-base" : "text-xs md:text-sm"} text-left`}>
                 {plan.features.map((feature, fIdx) => (
                   <li key={fIdx} className="flex items-center gap-2 text-gray-600 leading-relaxed">
-                    <span className="text-green-500 text-base">✔</span>
+                    <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -126,12 +132,12 @@ export default function Plan() {
                   py-2.5 md:py-3
                   bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500
                   hover:from-sky-500 hover:to-blue-700 hover:shadow-lg
-                  hover:scale-[1.03]
-                  text-white shadow relative overflow-hidden transition-all duration-300 text-base
+                  hover:scale-[1.02]
+                  text-white shadow transition-all duration-200 text-base
                 `}
-               onClick={() => {
-                                document.getElementById('resellers')?.scrollIntoView({ behavior: 'smooth' });
-                              }}
+                onClick={() => {
+                  document.getElementById('resellers')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 <span className="relative z-10">Buy Now</span>
                 <span className="absolute top-0 left-0 w-full h-full rounded-lg bg-gradient-to-r from-white/30 to-white/10 opacity-40 pointer-events-none blur-sm" />

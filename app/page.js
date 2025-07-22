@@ -5,16 +5,25 @@ import PlanSection from "@/components/Plan";
 import Features from "@/components/Features";
 import Resellers from "@/components/Resellers";
 import SmoothScroll from "@/components/Smoothscroll";
+import SectionMotion from "@/components/SectionMotion"; // <--- Tambah ini
 
 export default function Home() {
   return (
     <SmoothScroll>
       <Navbar />
       <main className="relative text-gray-800">
-        <Hero />
-        <Features />
-        <PlanSection />
-        <Resellers />
+        <SectionMotion id="home" delay={0.04} className="scroll-mt-24">
+          <Hero />
+        </SectionMotion>
+        <SectionMotion id="feature" delay={0.09} className="scroll-mt-24">
+          <Features />
+        </SectionMotion>
+        <SectionMotion id="plan" delay={0.15} className="scroll-mt-24">
+          <PlanSection />
+        </SectionMotion>
+        <SectionMotion id="resellers" delay={0.2} className="scroll-mt-24">
+          <Resellers />
+        </SectionMotion>
       </main>
       <Footer />
       {/* Floating Telegram button */}

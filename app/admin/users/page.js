@@ -373,18 +373,30 @@ function UserActionModal({ user, onClose, onAction }) {
   });
   const [newPass, setNewPass] = useState('');
   const [licenseType, setLicenseType] = useState('3month');
+  const [loginadmin, setLoginadmin] = useState(null);
+
+    useEffect(() => {
+    const stored = localStorage.getItem('admin');
+    if (stored) {
+      try {
+        setLoginadmin(JSON.parse(stored));
+      } catch {
+        setLoginadmin(null);
+      }
+    }
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/40 backdrop-blur-[3px] animate-in fade-in">
-      <div className="relative bg-white/90 border border-blue-100 shadow-2xl rounded-3xl max-w-lg w-full p-0 overflow-hidden animate-in scale-in">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/40 backdrop-blur-[3px] p-4 sm:p-6">
+      <div className="relative bg-white/90 border border-blue-100 shadow-2xl rounded-3xl max-w-lg w-full p-6 sm:p-8 overflow-auto max-h-[90vh] animate-in scale-in">
         {/* Header Bar */}
-        <div className="flex items-center gap-3 px-8 pt-8 pb-4 border-b border-blue-50 bg-gradient-to-r from-white/80 via-sky-50 to-blue-50/70 rounded-t-3xl">
-          <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 via-blue-200 to-white text-sky-600 shadow-lg border border-blue-100">
-            <Users className="w-6 h-6" />
+         <div className="flex items-center gap-3 pb-4 border-b border-blue-50">
+           <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 via-blue-200 to-white text-sky-600 shadow-lg border border-blue-100">
+              <Users className="w-6 h-6" />
           </div>
           <div className="flex-1">
-            <div className="text-lg font-normal text-gray-800">User Details</div>
-            <div className="text-xs text-sky-400 font-medium">{user.email}</div>
+           <div className="text-lg font-normal text-gray-800 truncate">{user.email}</div>
+            <div className="text-sm text-gray-500 truncate">User Details</div>
           </div>
           <button
             type="button"
@@ -396,14 +408,16 @@ function UserActionModal({ user, onClose, onAction }) {
           </button>
         </div>
         {/* Tabs */}
-        <div className="flex gap-2 px-8 pt-4 pb-2 border-b border-blue-50">
+          <div className="flex gap-2 pt-4 pb-2 border-b border-blue-50 overflow-x-auto">
           {['detail', 'edit', 'license', 'action'].map(t => (
             <button
               key={t}
-              className={`flex-1 py-2 rounded-xl font-normal capitalize transition-all text-base 
+              className={`
+                flex-shrink-0
+                py-2 px-4 rounded-xl font-normal capitalize transition-all text-base
                 ${tab === t
-                  ? 'bg-gradient-to-r from-sky-100 via-blue-100 to-white text-blue-600 shadow font-normal'
-                  : 'hover:bg-gray-100 text-gray-400 font-normal'}
+                  ? 'bg-gradient-to-r from-sky-100 via-blue-100 to-white text-blue-600 shadow'
+                  : 'hover:bg-gray-100 text-gray-400'}
               `}
               onClick={() => setTab(t)}
             >
@@ -416,7 +430,7 @@ function UserActionModal({ user, onClose, onAction }) {
         </div>
 
         {/* Content */}
-        <div className="px-8 py-8">
+        <div className="pt-6">
           {/* Detail */}
           {tab === 'detail' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">

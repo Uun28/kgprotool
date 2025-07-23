@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <title>KGPROTOOL</title>
         <meta name="description" content="Powerful MDM Tool" />
       </head>
-      <body className={`${poppins.variable} antialiased relative`}>
+      <body className={`${poppins.variable}`}>
         {/* Pattern Kotak Besar */}
         <div
           className="fixed inset-0 -z-50 pointer-events-none"

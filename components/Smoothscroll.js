@@ -7,11 +7,11 @@ export default function SmoothScroll({ children }) {
     <ReactLenis
       root
       options={{
-        duration: 1.2,
+        duration: 1.0, // semakin rendah, semakin responsif
+        smooth: true,
+        smoothTouch: false, // false = native scroll di mobile
         lerp: 0.08,
-        smoothWheel: true,
-        smoothTouch: true,
-        touchMultiplier: 1.5,
+        direction: "vertical"
       }}
     >
       {children}

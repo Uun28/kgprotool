@@ -37,7 +37,7 @@ export default function Activation() {
             licensed: p.licensed
           }));
           setPackages(mapped);
-          setPackageMonth(mapped[0]?.value || ''); // default pilih paket pertama
+          setPackageMonth(mapped[0]?.value || ''); 
         } else {
           setError('Failed to fetch license prices');
         }

@@ -97,7 +97,7 @@ export default function Hero() {
       <div className={`mb-12 transition-all duration-1000 delay-600 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}>
-        <a href="/KGProTool.rar">
+        <a href="/KGPROTOOL.rar">
           <button className="group relative px-8 py-4 rounded-2xl font-medium text-white 
             bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500
             shadow-xl hover:shadow-2xl hover:scale-105 

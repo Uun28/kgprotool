@@ -10,10 +10,7 @@ const poppins = Poppins({
 export const metadata = {
   title: "KGPROTOOL - Samsung KnoxGuard Unlock & MDM Removal Tool",
   description:
-    "KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely.",
-  icons: {
-    icon: "/KGPro.ico",
-  },
+    "KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely",
 };
 
 
@@ -21,8 +18,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
-        <meta name="description" content="Powerful MDM Tool" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <meta name="description" content="KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely" />
       </head>
       <body className={`${poppins.variable}`}>
         {/* Pattern Kotak Besar */}

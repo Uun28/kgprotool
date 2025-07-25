@@ -26,8 +26,9 @@ export default function Resellers() {
       logo: "/Azeunlock.jpg",
       whatsapp: "http://wa.me/+918178370731",
       telegram: "https://t.me/gsm_teammm",
+      facebook : "https://www.facebook.com/azeunlock",
       website: "https://azeunlock.com/",
-      country: "",
+      country: "WorldWide",
     },
     {
       name: "GSM SULTENG",

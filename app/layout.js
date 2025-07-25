@@ -8,20 +8,44 @@ const poppins = Poppins({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://kgprotool.com"),  // ✅ tambahkan ini
   title: "KGPROTOOL",
-  description: "Powerful MDM Tool",
+  description: "Powerful MDM Tool for Samsung KnoxGuard Bypass",
+  icons: {
+    icon: "/KGPro.ico",
+    shortcut: "/KGPro.ico",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "KGPROTOOL",
+    description: "Powerful MDM Tool for Samsung KnoxGuard Bypass",
+    url: "https://kgprotool.com",
+    siteName: "KGPROTOOL",
+    images: [
+      {
+        url: "/logo.png",
+        width: 180,
+        height: 180,
+        alt: "KGPROTOOL Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KGPROTOOL",
+    description: "Powerful MDM Tool for Samsung KnoxGuard Bypass",
+    images: ["/logo.png"],
+  },
 };
+
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
-        <title>KGPROTOOL</title>
-        <meta name="description" content="Powerful MDM Tool" />
-      </head>
       <body className={`${poppins.variable}`}>
-        {/* Pattern Kotak Besar */}
+        {/* ✅ BACKGROUND GRID PATTERN */}
         <div
           className="fixed inset-0 -z-50 pointer-events-none"
           aria-hidden="true"
@@ -35,15 +59,17 @@ export default function RootLayout({ children }) {
             <defs>
               <pattern
                 id="grid"
-                width="100"    // <-- Besar kotak di sini
-                height="100"   // <-- Besar kotak di sini
+                width="100"
+                height="100"
                 patternUnits="userSpaceOnUse"
               >
+                {/* Background putih */}
                 <rect x="0" y="0" width="150" height="100" fill="white" />
+                {/* Grid line abu soft */}
                 <path
                   d="M 100 0 L 0 0 0 100"
                   fill="none"
-                  stroke="#e5e7eb"   // Abu muda, modern soft
+                  stroke="#e5e7eb"
                   strokeWidth="1.2"
                 />
               </pattern>
@@ -52,6 +78,7 @@ export default function RootLayout({ children }) {
           </svg>
         </div>
 
+        {/* ✅ MAIN CONTENT */}
         <main className="relative z-10">{children}</main>
       </body>
     </html>

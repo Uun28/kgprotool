@@ -8,18 +8,24 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "KGPROTOOL - Samsung KnoxGuard Unlock & MDM Removal Tool",
-  description:
-    "KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely",
+  title: "KGPROTOOL",
+  description: "Powerful MDM Tool",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" }
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
-
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <meta name="description" content="KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely" />
+        <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
+        <title>KGPROTOOL</title>
+        <meta name="description" content="Powerful MDM Tool" />
       </head>
       <body className={`${poppins.variable}`}>
         {/* Pattern Kotak Besar */}
@@ -36,15 +42,15 @@ export default function RootLayout({ children }) {
             <defs>
               <pattern
                 id="grid"
-                width="100"
-                height="100"
+                width="100"    // <-- Besar kotak di sini
+                height="100"   // <-- Besar kotak di sini
                 patternUnits="userSpaceOnUse"
               >
                 <rect x="0" y="0" width="150" height="100" fill="white" />
                 <path
                   d="M 100 0 L 0 0 0 100"
                   fill="none"
-                  stroke="#e5e7eb"
+                  stroke="#e5e7eb"   // Abu muda, modern soft
                   strokeWidth="1.2"
                 />
               </pattern>

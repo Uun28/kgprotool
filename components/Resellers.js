@@ -24,7 +24,6 @@ export default function Resellers() {
      {
       name: "AZE UNLOCK",
       logo: "/Azeunlock.jpg",
-      whatsapp: "http://wa.me/+918178370731",
       telegram: "https://t.me/gsm_teammm",
       facebook : "https://www.facebook.com/azeunlock",
       website: "https://azeunlock.com/",

@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "KGPROTOOL",
+  title: "KGPROTOOL - POWERFULL KNOXGUARD UNLOCKTOOL",
   description: "Powerful MDM Tool",
   icons: {
     icon: [

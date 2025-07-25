@@ -21,6 +21,14 @@ export default function Resellers() {
       website: "https://servergsmraja.com/",
       country: "INDIA",
     },
+     {
+      name: "AZE UNLOCK",
+      logo: "/Azeunlock.jpg",
+      whatsapp: "http://wa.me/+918178370731",
+      telegram: "https://t.me/gsm_teammm",
+      website: "https://azeunlock.com/",
+      country: "",
+    },
     {
       name: "GSM SULTENG",
       logo: "/gsmsulteng.jpg",

@@ -7,7 +7,6 @@ import Selling from '../component/Selling';
 import Option from '../component/Option';
 import { useRouter } from 'next/navigation';
 import { API2 } from '@/lib/config';
-import { Import } from 'lucide-react';
 
 
 export default function Dashboard() {
@@ -19,7 +18,7 @@ export default function Dashboard() {
   useEffect(() => {
     const data = localStorage.getItem('resellers');
     if (data) setUser(JSON.parse(data));
-    else router.replace('/resellers/login');
+    else router.replace('/resellers/auth');
   }, [router]);
 
   // Logout logic FE
@@ -31,7 +30,7 @@ async function handleLogout() {
     credentials: 'include'
   });
   setLoading(false);
-  window.location.href = '/resellers/login';
+  window.location.href = '/resellers/auth';
 }
 
   if (!user) return null;

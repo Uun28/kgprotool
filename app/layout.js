@@ -8,12 +8,14 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "KGPROTOOL - Samsung KnoxGuard Unlocking Tool",
-  description: "Powerful MDM Tool",
+  title: "KGPROTOOL - Samsung KnoxGuard Unlock & MDM Removal Tool",
+  description:
+    "KGPROTOOL 2.0 - Powerful Samsung KnoxGuard Unlocking Tool. Remove MDM, Unlock Network, Edit NVDATA & NVRAM, and bypass the latest security patches safely.",
   icons: {
     icon: "/KGPro.ico",
   },
 };
+
 
 export default function RootLayout({ children }) {
   return (

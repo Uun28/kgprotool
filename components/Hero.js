@@ -78,7 +78,7 @@ export default function Hero() {
           <Typewriter
             options={{
               strings: [
-                "KGPROTOOL 2.0",
+                "KGPROTOOL NEXT-GEN 2.0",
                 "Powerful KG Unlocking Tool"
               ],
               autoStart: true,

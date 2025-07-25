@@ -8,8 +8,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "KGPROTOOL - POWERFULL KNOXGUARD UNLOCKTOOL",
-  description: "Powerful MDM Tool",
+  title: "KGPROTOOL - Samsung KnoxGuard Remove Tool",
+  description: "Powerful Samsung KnoxGuard Remove Tool",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -24,8 +24,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
-        <title>KGPROTOOL</title>
-        <meta name="description" content="Powerful MDM Tool" />
+        <title>KGPROTOOL - Samsung KnoxGuard Remove Tool</title>
+        <meta name="description" content="Samsung KnoxGuard Remove Tool" />
       </head>
       <body className={`${poppins.variable}`}>
         {/* Pattern Kotak Besar */}

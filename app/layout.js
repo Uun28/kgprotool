@@ -18,7 +18,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* HEAD SECTION DIHAPUS SEPENUHNYA */}
+      <head>
+        <link rel="icon" href="/KGPro.ico" type="image/x-icon" />
+        <meta name="description" content="Powerful MDM Tool" />
+      </head>
       <body className={`${poppins.variable}`}>
         {/* Pattern Kotak Besar */}
         <div

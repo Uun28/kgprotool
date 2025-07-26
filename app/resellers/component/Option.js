@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KeyRound, Loader2, XCircle, CheckCircle, KeySquare } from 'lucide-react';
+import { KeyRound, Loader2, XCircle, CheckCircle, KeySquare, Copy } from 'lucide-react';
 import { API2 } from '@/lib/config';
 
 export default function Option() {
@@ -15,17 +15,26 @@ export default function Option() {
   const [modalStatus, setModalStatus] = useState('success'); 
   const [modalMsg, setModalMsg] = useState('');
 
+  const API_ENDPOINT = "https://minangkabau-gsm.store/api/v1/dhru.php";
+
   const user = typeof window !== "undefined" && JSON.parse(localStorage.getItem('resellers') || '{}');
   const id = user?.id;
 
-  // Fungsi modal helper
+  // ✅ Modal Helper
   function showModalMsg(msg, status = 'success') {
     setModalMsg(msg);
     setModalStatus(status);
     setShowModal(true);
-    setTimeout(() => setShowModal(false), 4000);
+    setTimeout(() => setShowModal(false), 2500);
   }
 
+  // ✅ Copy helper
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    showModalMsg("Copied to clipboard!", "success");
+  };
+
+  // ✅ Change Password Handler
   async function handleSubmit(e) {
     e.preventDefault();
     if (!oldPassword || !newPassword || !confirmPassword) {
@@ -83,7 +92,7 @@ export default function Option() {
       const data = await res.json();
       if (data.status === 'success') {
         setApiKey(data.apikey);
-        showModalMsg(`New API Key: ${data.apikey}`, 'success');
+        showModalMsg(`New API Key generated!`, 'success');
       } else {
         showModalMsg(data.message || 'Failed to generate API key', 'error');
       }
@@ -113,7 +122,16 @@ export default function Option() {
         </div>
 
         {apiKey ? (
-          <p className="break-all text-sm text-gray-700 mb-3">{apiKey}</p>
+          <div className="flex items-center justify-between gap-2 mb-3 bg-blue-50 p-2 rounded-lg border border-blue-100">
+            <p className="break-all text-sm text-gray-800">{apiKey}</p>
+            <button
+              onClick={() => copyToClipboard(apiKey)}
+              className="p-1.5 rounded-lg bg-white hover:bg-gray-100 transition-all"
+              title="Copy API Key"
+            >
+              <Copy className="w-4 h-4 text-blue-500" />
+            </button>
+          </div>
         ) : (
           <p className="text-sm text-gray-500 mb-3">
             You don’t have an API Key yet. Click the button below to generate one.
@@ -136,6 +154,21 @@ export default function Option() {
             "Generate API Key"
           )}
         </button>
+
+        {/* ✅ API URL + Copy */}
+        <div className="mt-4 p-3 bg-white/70 border border-blue-100 rounded-xl text-xs text-gray-700 shadow-sm">
+          <p className="font-medium text-gray-800 mb-1">API Endpoint:</p>
+          <div className="flex items-center justify-between gap-2">
+            <span className="break-all">{API_ENDPOINT}</span>
+            <button
+              onClick={() => copyToClipboard(API_ENDPOINT)}
+              className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all"
+              title="Copy API URL"
+            >
+              <Copy className="w-4 h-4 text-gray-600" />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* ✅ Change Password Section */}
@@ -194,62 +227,66 @@ export default function Option() {
         </button>
       </form>
 
-    {showModal && (
-  <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm animate-fadein">
-    
-    {/* Icon Status Besar + Animasi */}
-    <div className={`w-24 h-24 rounded-full flex items-center justify-center shadow-lg mb-6 ${
-      modalStatus === 'success' 
-        ? 'bg-gradient-to-br from-green-400 to-emerald-600' 
-        : 'bg-gradient-to-br from-red-400 to-rose-600'
-    } animate-iconpop`}>
-      {modalStatus === 'success' ? (
-        <CheckCircle className="w-14 h-14 text-white drop-shadow-lg" />
-      ) : (
-        <XCircle className="w-14 h-14 text-white drop-shadow-lg" />
+      {/* ✅ Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm animate-fadein">
+          {/* Icon Status */}
+          <div
+            className={`w-24 h-24 rounded-full flex items-center justify-center shadow-lg mb-6 ${
+              modalStatus === 'success'
+                ? 'bg-gradient-to-br from-green-400 to-emerald-600'
+                : 'bg-gradient-to-br from-red-400 to-rose-600'
+            } animate-iconpop`}
+          >
+            {modalStatus === 'success' ? (
+              <CheckCircle className="w-14 h-14 text-white drop-shadow-lg" />
+            ) : (
+              <XCircle className="w-14 h-14 text-white drop-shadow-lg" />
+            )}
+          </div>
+
+          {/* Pesan */}
+          <div className="text-center max-w-md px-6">
+            <h3
+              className={`text-3xl font-normal mb-2 ${
+                modalStatus === 'success' ? 'text-green-100' : 'text-red-100'
+              }`}
+            >
+              {modalStatus === 'success' ? 'Success!' : 'Oops!'}
+            </h3>
+            <p className="text-white/90 text-base leading-relaxed break-words">
+              {modalMsg}
+            </p>
+          </div>
+
+          {/* Tombol Close */}
+          <button
+            onClick={() => setShowModal(false)}
+            className="mt-6 px-6 py-2 rounded-full text-white bg-white/10 border border-white/30 hover:bg-white/20 transition-all duration-200"
+          >
+            Close
+          </button>
+
+          {/* Animasi */}
+          <style jsx>{`
+            @keyframes fadein {
+              0% { opacity: 0; }
+              100% { opacity: 1; }
+            }
+            .animate-fadein {
+              animation: fadein 0.3s ease-out forwards;
+            }
+            @keyframes iconpop {
+              0% { transform: scale(0.6); opacity: 0; }
+              70% { transform: scale(1.1); opacity: 1; }
+              100% { transform: scale(1); }
+            }
+            .animate-iconpop {
+              animation: iconpop 0.4s ease-out forwards;
+            }
+          `}</style>
+        </div>
       )}
-    </div>
-
-    {/* Pesan */}
-    <div className="text-center max-w-md px-6">
-      <h3 className={`text-3xl font-normal mb-2 ${
-        modalStatus === 'success' ? 'text-green-100' : 'text-red-100'
-      }`}>
-        {modalStatus === 'success' ? 'Success!' : 'Oops!'}
-      </h3>
-      <p className="text-white/90 text-base leading-relaxed break-words">{modalMsg}</p>
-    </div>
-
-    {/* Tombol Close */}
-    <button
-      onClick={() => setShowModal(false)}
-      className="mt-6 px-6 py-2 rounded-full text-white bg-white/10 border border-white/30 hover:bg-white/20 transition-all duration-200"
-    >
-      Close
-    </button>
-
-    {/* Animasi */}
-    <style jsx>{`
-      @keyframes fadein {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
-      }
-      .animate-fadein {
-        animation: fadein 0.3s ease-out forwards;
-      }
-      @keyframes iconpop {
-        0% { transform: scale(0.6); opacity: 0; }
-        70% { transform: scale(1.1); opacity: 1; }
-        100% { transform: scale(1); }
-      }
-      .animate-iconpop {
-        animation: iconpop 0.4s ease-out forwards;
-      }
-    `}</style>
-  </div>
-)}
-
-
     </div>
   );
 }

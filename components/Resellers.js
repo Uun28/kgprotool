@@ -14,6 +14,15 @@ export default function Resellers() {
       country: "WorldWide",
     },  
     {
+      name: "UNLOCKERBD",
+      logo: "/UnlockerBD.jpg",
+      facebook: "https://www.facebook.com/gsm.tanbir007",
+      whatsapp: "https://wa.me/+8801730903926",
+      telegram: "https://t.me/UnlockerBDofficial",
+      website: "https://unlockerbd.com",
+      country: "WorldWide",
+    },  
+    {
       name: "AZE UNLOCK",
       logo: "/Azeunlock.jpg",
       telegram: "https://t.me/gsm_teammm",
